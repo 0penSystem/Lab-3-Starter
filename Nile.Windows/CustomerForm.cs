@@ -15,11 +15,32 @@ namespace Nile.Windows
     public partial class CustomerForm : Form
     {
 
+        /// <summary>
+        /// A Reference to the Nile Database.
+        /// </summary>
         public Database Database
         {
             get;
             set;
         }
+
+        /// <summary>
+        /// The form's selected customer. Set before the form loads to edit a specific customer.
+        /// </summary>
+        public Customer SelectedCustomer
+        {
+            get; set;
+        }
+
+        /// <summary>
+        /// Form for creating and editing customers.
+        /// </summary>
+        public CustomerForm()
+        {
+            InitializeComponent();
+        }
+
+        #region Event Handlers
 
         protected override void OnLoad(EventArgs e)
         {
@@ -34,14 +55,6 @@ namespace Nile.Windows
             ValidateChildren();
         }
 
-        public Customer SelectedCustomer
-        {
-            get; set;
-        }
-        public CustomerForm()
-        {
-            InitializeComponent();
-        }
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
@@ -76,7 +89,7 @@ namespace Nile.Windows
                     Database.Customers.Update(customer);
                 }
 
-                
+
                 DialogResult = DialogResult.OK;
                 SelectedCustomer = customer;
                 Close();
@@ -120,5 +133,8 @@ namespace Nile.Windows
                 e.Cancel = false;
             }
         }
+        #endregion
+
+
     }
 }

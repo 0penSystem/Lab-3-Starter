@@ -14,21 +14,23 @@ namespace Nile.Windows
     public partial class MainForm : Form
     {
 
+        /// <summary>
+        /// The Nile Database instance.
+        /// </summary>
         public Database Database
         {
             get; set;
         } = new Database();
 
+        /// <summary>
+        /// Main form of the Nile system.
+        /// </summary>
         public MainForm()
         {
             InitializeComponent();
         }
 
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-            bindingCustomers.DataSource = Database.Customers.GetAll();
-        }
+        #region Private Methods
 
         private Customer getSelectedCustomer(DataGridView grid, int rowIndex)
         {
@@ -52,6 +54,22 @@ namespace Nile.Windows
 
         }
 
+        private void RefreshGrid()
+        {
+            gridCustomers.DataSource = null;
+            gridCustomers.DataSource = Database.Customers.GetAll();
+            gridCustomers.Refresh();
+        }
+
+        #endregion
+
+        #region Event Handlers
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            bindingCustomers.DataSource = Database.Customers.GetAll();
+        }
         private void miFileExit_Click(object sender, EventArgs e)
         {
             Close();
@@ -74,12 +92,18 @@ namespace Nile.Windows
             {
                 RefreshGrid();
             }
-
         }
 
         private void miProductsAdd_Click(object sender, EventArgs e)
         {
             var form = new ProductForm() { Database = Database };
+
+            form.ShowDialog(this);
+        }
+
+        private void miProductsManage_Click(object sender, EventArgs e)
+        {
+            var form = new ManageProductsForm() { Database = Database };
 
             form.ShowDialog(this);
         }
@@ -92,7 +116,7 @@ namespace Nile.Windows
             {
                 return;
             }
-            if (!isLinkClicked(grid, e.ColumnIndex, grid.Columns["colEdit"] as DataGridViewLinkColumn ))
+            if (!isLinkClicked(grid, e.ColumnIndex, grid.Columns["colEdit"] as DataGridViewLinkColumn))
             {
                 return;
             }
@@ -100,7 +124,8 @@ namespace Nile.Windows
             var form = new CustomerForm()
             {
                 SelectedCustomer = customer
-                , Database = Database
+                ,
+                Database = Database
             };
 
             form.ShowDialog(this);
@@ -112,19 +137,6 @@ namespace Nile.Windows
 
 
         }
-
-        private void RefreshGrid()
-        {
-            gridCustomers.DataSource = null;
-            gridCustomers.DataSource = Database.Customers.GetAll();
-            gridCustomers.Refresh();
-        }
-
-        private void miProductsManage_Click(object sender, EventArgs e)
-        {
-            var form = new ManageProductsForm() { Database = Database };
-
-            form.ShowDialog(this);
-        }
+        #endregion
     }
 }

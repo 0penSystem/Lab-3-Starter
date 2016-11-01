@@ -13,23 +13,33 @@ namespace Nile.Windows
 {
     public partial class ProductForm : Form
     {
+        /// <summary>
+        /// Form for creating and editing products.
+        /// </summary>
         public ProductForm()
         {
             InitializeComponent();
         }
 
+        /// <summary>
+        /// A Reference to the Nile Database.
+        /// </summary>
         public Database Database
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// The form's selected product. Set before the form loads to edit a specific product.
+        /// </summary>
         public Product SelectedProduct
         {
             get;
             set;
         }
 
+        #region Event Handlers
         private void btnCancel_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
@@ -61,15 +71,15 @@ namespace Nile.Windows
                     Database.Products.Update(product);
                 }
 
-                
+
                 SelectedProduct = product;
 
                 DialogResult = DialogResult.OK;
                 Close();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-               
+
                 MessageBox.Show(owner: this, text: ex.Message, caption: "Save Failed", buttons: MessageBoxButtons.OK, icon: MessageBoxIcon.Error);
             }
 
@@ -125,5 +135,8 @@ namespace Nile.Windows
 
             ValidateChildren();
         }
+        #endregion
+
+
     }
 }

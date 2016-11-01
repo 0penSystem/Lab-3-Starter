@@ -13,22 +13,24 @@ namespace Nile.Windows
 {
     public partial class ManageProductsForm : Form
     {
+        /// <summary>
+        /// A Reference to the Nile Database.
+        /// </summary>
         public Database Database
         {
             get;
             set;
         }
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-            bindingProducts.DataSource = Database.Products.GetAll();
-        }
 
+        /// <summary>
+        /// Form for managing products in a data grid based view.
+        /// </summary>
         public ManageProductsForm()
         {
             InitializeComponent();
         }
 
+        #region Private Methods
 
         private void RefreshGrid()
         {
@@ -59,6 +61,14 @@ namespace Nile.Windows
 
         }
 
+        #endregion
+
+        #region Event Handlers
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            bindingProducts.DataSource = Database.Products.GetAll();
+        }
         private void gridProducts_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             var grid = sender as DataGridView;
@@ -86,5 +96,8 @@ namespace Nile.Windows
             }
 
         }
+        #endregion
+
+
     }
 }
