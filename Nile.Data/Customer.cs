@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,18 +13,19 @@ using System.Threading.Tasks;
 namespace Nile.Data
 {
     /// <summary>Represents a customer.</summary>
+    [Table("Customers")]
     public class Customer : IValidatableObject
     {
         #region Construction
 
         /// <summary>Initializes an instance of the <see cref="Customer"/> class.</summary>
-        public Customer ()
+        public Customer()
         { }
 
         /// <summary>Initializes an instance of the <see cref="Customer"/> class.</summary>
         /// <param name="id">The ID.</param>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="id"/> is less than 0.</exception>
-        public Customer ( int id )
+        public Customer(int id)
         {
             Verify.ArgumentIsGreaterThanOrEqualTo(nameof(id), id, 0);
 
@@ -32,12 +34,15 @@ namespace Nile.Data
         #endregion
 
         /// <summary>Gets the ID of the customer.</summary>
-        public int Id { get; internal set; }
+        [Key]
+        public int Id { get; set; }
 
         /// <summary>Gets or sets the current order.</summary>
+        [NotMapped]
         public Order CurrentOrder { get; set; }
 
         /// <summary>Gets or sets the first name.</summary>
+        [Required(AllowEmptyStrings = false)]
         public string FirstName
         {
             get { return _firstName ?? ""; }
@@ -45,6 +50,7 @@ namespace Nile.Data
         }
 
         /// <summary>Gets or sets the last name.</summary>
+        [Required(AllowEmptyStrings = false)]
         public string LastName
         {
             get { return _lastName ?? ""; }
@@ -54,13 +60,9 @@ namespace Nile.Data
         /// <summary>Validates the object.</summary>
         /// <param name="validationContext">The context.</param>
         /// <returns>The errors.</returns>
-        public IEnumerable<ValidationResult> Validate ( ValidationContext validationContext )
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            if (String.IsNullOrEmpty(FirstName))
-                yield return new ValidationResult("First Name is required.", new[] { nameof(FirstName) });
-
-            if (String.IsNullOrEmpty(LastName))
-                yield return new ValidationResult("Last Name is required.", new[] { nameof(LastName) });
+            return null;
         }
 
         #region Private Members
